@@ -17,6 +17,7 @@ class CreateItemsTable extends Migration
             $table->bigIncrements('id');
             $table->string('tittle');
             $table->integer('qtd');
+            $table->boolean('bought')->default(false);
             $table->timestamps();
         });
     }

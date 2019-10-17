@@ -19,7 +19,8 @@ Route::group(['prefix' => 'main', 'as' => 'admin.'], function () {
 
 
     Route::post('/items/add','ItemController@addItem')->name('main.item.add');
-    Route::post('/items/delete','ItemController@delete')->name('main.item.add');
+    Route::post('/items/delete','ItemController@delete')->name('main.item.delete');
+    Route::post('/items/bought','ItemController@boughtItem')->name('main.item.bought');
     Route::get('/items/get','ItemController@getItems')->name('main.item.get');
 
 });

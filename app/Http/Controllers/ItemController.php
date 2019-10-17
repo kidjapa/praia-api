@@ -43,10 +43,20 @@ class ItemController extends Controller
 
     public function addItem(Request $request){
 
-        $item = new Item();
+        // Verify if exists this item
 
-        $item->tittle = $request->get('tittle');
-        $item->qtd = $request->get('qtd');
+        $item = Item::where(\DB::raw('UPPER(tittle)'),'=',strtoupper($request->get('tittle')))->first();
+
+        if(is_null($item)){
+            $item = new Item();
+            $item->tittle = $request->get('tittle');
+            $item->qtd = $request->get('qtd');
+        } else{
+            $item->tittle = $request->get('tittle');
+            $item->qtd = $item->qtd+$request->get('qtd');
+        }
+
+
 
         try{
             if($item->save()){
@@ -56,6 +66,28 @@ class ItemController extends Controller
             }
         }catch (\Exception $e){
             return MainController::getReturnGetResponse(false, $e->getMessage());
+        }
+    }
+
+
+
+    public function boughtItem(Request $request){
+        if($request->has('id')){
+            try{
+                /** @var Item $item */
+                $item = Item::find($request->get('id'));
+                if(!is_null($item)){
+                    $item->bought = $request->get('bought');
+                    if($item->save())
+                        return MainController::getReturnGetResponse(true, 'Item removido com sucesso');
+                }else{
+                    return MainController::getReturnGetResponse(false, 'Erro ao localizar item. id: '.$request->get('id'));
+                }
+            }catch (\Exception $e) {
+                return MainController::getReturnGetResponse(false, $e->getMessage());
+            }
+        }else{
+            return MainController::getReturnGetResponse(false, 'param id is not founded');
         }
     }
 
