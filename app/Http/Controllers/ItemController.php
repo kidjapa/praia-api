@@ -44,8 +44,11 @@ class ItemController extends Controller
     public function addItem(Request $request){
 
         // Verify if exists this item
-
-        $item = Item::where(\DB::raw('UPPER(tittle)'),'=',strtoupper($request->get('tittle')))->first();
+        if($request->has('id')){
+            $item = Item::find($request->get('id'));
+        }else{
+            $item = Item::where(\DB::raw('UPPER(tittle)'),'=',strtoupper($request->get('tittle')))->first();
+        }
 
         if(is_null($item)){
             $item = new Item();
@@ -53,10 +56,12 @@ class ItemController extends Controller
             $item->qtd = $request->get('qtd');
         } else{
             $item->tittle = $request->get('tittle');
-            $item->qtd = $item->qtd+$request->get('qtd');
+            if(!$request->has('id'))
+                $item->qtd = $item->qtd+$request->get('qtd');
+            else{
+                $item->qtd = $request->get('qtd');
+            }
         }
-
-
 
         try{
             if($item->save()){
