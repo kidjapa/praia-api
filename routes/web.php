@@ -27,5 +27,6 @@ Route::group(['prefix' => 'main', 'as' => 'admin.'], function () {
     // Routes for Lista Dias
     Route::get('/dias/get','DiasPessoasController@getDaysValues')->name('main.dias.get');
     Route::post('/dias/setdaypeople','DiasPessoasController@setDayPeople')->name('main.dias.setday');
+    Route::get('/dias/getDefaultValues','DiasPessoasController@getDefaultValues')->name('main.dias.getdefaultvalues');
 
 });

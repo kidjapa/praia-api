@@ -47,7 +47,11 @@ class DiasPessoasController extends Controller
                 return MainController::getReturnGetResponse(false, []);
             }
         }
+        return MainController::getReturnGetResponse(false, []);
+    }
 
+    public function getDefaultValues(){
+        return MainController::getReturnGetResponse(true, ['default_values' => Helpers::getArrayDefaultValues()->toArray()]);
     }
 
 }
